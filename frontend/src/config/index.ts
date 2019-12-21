@@ -1,5 +1,5 @@
-import * as global from "@scsa/global";
+import { Config, OrchestratorKeys } from "@scsa/global";
 import json from "../../package.json"
 
-export const cfg = new global.Config("Compoxure");
+export const cfg = new Config(OrchestratorKeys.Compoxure);
 export const pkg = json;

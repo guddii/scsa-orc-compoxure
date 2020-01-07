@@ -1,19 +1,22 @@
 extends ../../../node_modules/@scsa/styling/src/server/views/main.pug
 
-mixin subsystem(application)
+mixin subsystem(application, appendSrc)
     div(
         src=application.options.url + "api/fragments"
         title=application.options.text
         data-endpoint=application.options.text
         class="Socket Socket--fullBleed"
     )
-        esi:include(src=application.options.url + "api/fragments/compoxure")
+        esi:include(src=application.options.url + "api/fragments/compoxure" + appendSrc)
 
 block top
-    +subsystem(APPLICATIONS.Sales)
+    +subsystem(APPLICATIONS.Sales, "/entry")
 
 block left
-    +subsystem(APPLICATIONS.Catalogue)
+    - const slotA = "/entry?inc=" + encodeURIComponent(APPLICATIONS.Checkout.options.url + "api/fragments/compoxure/controls");
+    +subsystem(APPLICATIONS.Catalogue, slotA)
 
 block right
-    +subsystem(APPLICATIONS.Checkout)
+    - const innerSlotB = encodeURIComponent("?inc=" + APPLICATIONS.Checkout.options.url + "api/fragments/compoxure/controls");
+    - const slotB = "?inc=" + encodeURIComponent(APPLICATIONS.Catalogue.options.url + "api/fragments/compoxure/thin" + innerSlotB);
+    +subsystem(APPLICATIONS.Checkout, slotB)
